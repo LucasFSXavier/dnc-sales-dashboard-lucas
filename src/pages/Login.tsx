@@ -1,21 +1,28 @@
-import slyled from 'styled-components'
-
-const LoginArea = slyled.div`
-    background: #666;
-`
-
-const LoginImage = slyled.div`
-    background-image: url(/image-login.svg);
-    background-size: cover;
-    height: 100vh;
-    width: 50vh;
-`
+import { Box, Container, Grid } from '@mui/material'
+import { BannerImage } from '@/components'
 
 function Login() {
   return (
     <>
-      <LoginArea>LOGIN</LoginArea>
-      <LoginImage />
+      <Box>
+        <Grid container>
+          <Grid
+            size={{ xs: 12, sm: 6 }}
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              minHeight: '100vh',
+            }}
+          >
+            <Container maxWidth="sm">
+              <h1>Login</h1>
+            </Container>
+          </Grid>
+          <Grid size={{ sm: 6 }} sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <BannerImage />
+          </Grid>
+        </Grid>
+      </Box>
     </>
   )
 }
