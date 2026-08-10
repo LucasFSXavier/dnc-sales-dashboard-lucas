@@ -1,5 +1,5 @@
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 
 export type MessageProps = {
   msg: string
