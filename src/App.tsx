@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { Home, Leads, Login, Profile, Registration } from './pages'
-import { alertTitleClasses, checkboxClasses } from '@mui/material'
 
 function App() {
   const ProtectedRoute = () => {
