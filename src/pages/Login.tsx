@@ -1,3 +1,10 @@
+import type { ChangeEvent } from 'react'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
+import Cookies from 'js-cookie'
+
+// Components
 import { Box, Container, Grid } from '@mui/material'
 import {
   BannerImage,
@@ -6,9 +13,62 @@ import {
   StyledP,
   Logo,
 } from '@/components'
-import { pxToRem } from '@/utils'
+
+// Hooks
+import { useFormValidation, usePost } from '@/hooks'
+
+// Utils
+import { jwtExpirationDateConverter, pxToRem } from '@/utils'
+
+// Types
+import type { DecodedJWT, MessageProps, LoginData, LoginPostData } from '@/types'
 
 function Login() {
+  const navigate = useNavigate()
+  const inputs = [
+    { type: 'email', placeholder: 'E-mail' },
+    { type: 'password', placeholder: 'Senha' },
+  ]
+  const { data, loading, error, postData } = usePost<LoginData, LoginPostData>(
+    'login'
+  )
+  const { formValues, formValid, handleChange } = useFormValidation(inputs)
+
+  const handleMessage = (): MessageProps => {
+    if (!error) return { msg: '', type: 'success' }
+    switch (error) {
+      case 401:
+        return {
+          msg: 'E-mail e/ou senha inválidos',
+          type: 'error',
+        }
+      default:
+        return {
+          msg: 'Não foi possível realizar a operação. Entre em contato com nosso suporte.',
+          type: 'error',
+        }
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    await postData({
+      email: String(formValues[0]),
+      password: String(formValues[1]),
+    })
+  }
+
+  useEffect(() => {
+    if (data?.jwt_token) {
+      const decoded: DecodedJWT = jwtDecode(data?.jwt_token)
+      Cookies.set('Authorization', data?.jwt_token, {
+        expires: jwtExpirationDateConverter(decoded.exp),
+        secure: true
+      })
+    }
+  if (Cookies.get('Authorization')) navigate('/home')
+  }, [data, navigate])
+
   return (
     <>
       <Box>
@@ -30,14 +90,23 @@ function Login() {
                 <StyledP>Entre com suas credenciais</StyledP>
               </Box>
               <FormComponent
-                inputs={[
-                  { placeholder: 'Email', type: 'email' },
-                  { placeholder: 'Password', type: 'password' },
-                ]}
+                inputs={inputs.map((input, index) => ({
+                  type: input.type,
+                  placeholder: input.placeholder,
+                  value: formValues[index] || '',
+                  onChange: (e: ChangeEvent<HTMLInputElement>) =>
+                    handleChange(index, (e.target as HTMLInputElement).value),
+                }))}
                 buttons={[
-                  { children: 'Login', type: 'submit', className: 'primary' },
+                  {
+                    className: 'primary',
+                    disabled: !formValid || loading,
+                    type: 'submit',
+                    onClick: handleSubmit,
+                    children: loading ? 'Aguarde...' : 'Login',
+                  },
                 ]}
-                message={{ type: 'error', msg: 'Credenciais inválidas' }}
+                message={handleMessage()}
               />
             </Container>
           </Grid>
