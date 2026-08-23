@@ -23,48 +23,14 @@ import type { HighlightsData, StarsData, NewsData, CustomChartProps } from '@/ty
 function Home() {
   const { data: highlightsData, loading: highlightsLoading, error: highlightsError } = useGet<HighlightsData[]>('sales/highlights')
   const { data: salesMonthData, loading: salesMonthLoading, error: salesMonthError } = useGet<CustomChartProps>('sales/month')
-  const mockListData = [
-    {
-      avatar: '/dnc-avatar.svg',
-      name: 'Nome Sobrenome 1',
-      subtitle: toBRL(3452.12),
-    },
-    {
-      avatar: '/dnc-avatar.svg',
-      name: 'Nome Sobrenome 2',
-      subtitle: toBRL(2000.0),
-    },
-    {
-      avatar: '/dnc-avatar.svg',
-      name: 'Nome Sobrenome 3',
-      subtitle: toBRL(3000.0),
-    },
-  ]
+  const { data: salesYearsData, loading: salesYearsLoading, error: salesYearsError } = useGet<CustomChartProps>('sales/year')
+  const { data: salesStarsData, loading: salesStarsLoading, error: salesStarsError } = useGet<StarsData[]>('sales/stars')
+  const { data: newsData, loading: newsLoading, error: newsError } = useGet<NewsData[]>('news')
 
-  const mockTableData = {
-    headers: ['Nome', 'Email', 'Actions'],
-    row: [
-      [
-        <span>Nome 1</span>,
-        <span>nome1@email.com</span>,
-        <button>Action 1</button>,
-      ],
-      [
-        <span>Nome 2</span>,
-        <span>nome2@email.com</span>,
-        <button>Action 2</button>,
-      ],
-      [
-        <span>Nome 3</span>,
-        <span>nome3@email.com</span>,
-        <button>Action 3</button>,
-      ],
-    ],
-  }
   return (
     <>
       <Header />
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" className='mb-2'>
         <Grid container spacing={4}>
           {!highlightsError && (
             <>
@@ -131,29 +97,68 @@ function Home() {
             </> 
           )}
           <Grid size={{ xs: 12, md: 5 }}>
-            <CardComponent>
-              <StyledH2 className='mb-1'>Maiores vendedores do mês</StyledH2>
-              <AvatarList listData={mockListData} />
-            </CardComponent>
+            {
+              !salesStarsError && (
+              <CardComponent className={salesStarsLoading ? 'skeleton-loading skeleton-loading-mh-2' : ''}>
+                {
+                  !salesStarsLoading && salesStarsData && (
+                    <>
+                      <StyledH2 className='mb-1'>Maiores vendedores do mês</StyledH2>
+                      <AvatarList 
+                        listData={salesStarsData.map((star) => ({
+                          avatar: '/dnc-avatar.svg',
+                          name: star.name,
+                          subtitle: toBRL(star.value),
+                        }))} 
+                      />
+                    </>
+                  )
+                }
+              </CardComponent>
+              )
+            }
           </Grid>
           <Grid size={{ xs: 12, md: 5 }}>
-            <CardComponent>
-              <StyledH2 className='mb-1'>Notícias relevantes</StyledH2>
-              <CustomTable
-                headers={mockTableData.headers}
-                row={mockTableData.row}
-              />
-            </CardComponent>
+            {
+              !newsError && (
+              <CardComponent className={newsLoading ? 'skeleton-loading skeleton-loading-mh-2' : ''}>
+                {
+                  !newsLoading && newsData && (
+                    <>
+                      <StyledH2 className='mb-1'>Notícias relevantes</StyledH2>
+                      <CustomTable
+                          headers={['Título', 'Horário']}
+                          row={newsData.map((news) => [
+                            <a className='ellipsis ellipsis-sm' href={news.link} target='_blank'>{news.title}</a>,
+                            <a href={news.link} target='_blank'>{news.date}</a>,
+                          ])}
+                      />
+                    </>
+                  )
+                }
+              </CardComponent>
+              )
+            }
           </Grid>
           <Grid size={{ xs: 12, md: 7}}>
-            <CardComponent>
-              <StyledH2 className='mb-1'>Valor de vendas por mês</StyledH2>
-              <CustomChart
-                labels={['January', 'February', 'March', 'April', 'May', 'June']}
-                data={[65, 59, 80, 81, 56, 55]}
-                type="bar"
-              />
-            </CardComponent>
+            {
+              !salesYearsError && (
+              <CardComponent className={salesYearsLoading ? 'skeleton-loading skeleton-loading-mh-2' : ''}>
+                {
+                  !salesYearsLoading && salesYearsData && (
+                    <>
+                      <StyledH2 className='mb-1'>Valor de vendas por mês</StyledH2>
+                      <CustomChart
+                        labels={salesYearsData.labels.map((label) => label)}
+                        data={salesYearsData.data.map((data) => data)}
+                        type={salesYearsData.type}
+                      />
+                    </>
+                  )
+                }
+              </CardComponent>
+              )
+            }
           </Grid>
         </Grid>
       </Container>
