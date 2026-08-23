@@ -20,7 +20,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
           <Route path="/leads" element={<Leads />} />
-          <Route path="/perfil" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </Router>
