@@ -6,8 +6,8 @@ export const useFormValidation = (inputs: InputProps[]) => {
     inputs.map((input) => input.value || '')
   )
   const formValid = inputs.every((input, index) => {
-    const value = !formValues[index]
-    if (input.required && value) {
+    const value = formValues[index]
+    if (input.required && !value) {
       return false
     }
     if (input.type === 'email') {
