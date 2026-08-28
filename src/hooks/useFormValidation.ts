@@ -6,8 +6,8 @@ export const useFormValidation = (inputs: InputProps[]) => {
     inputs.map((input) => input.value || '')
   )
   const formValid = inputs.every((input, index) => {
-    const value = !formValues[index]
-    if (input.required && value) {
+    const value = formValues[index]
+    if (input.required && !value) {
       return false
     }
     if (input.type === 'email') {
@@ -15,11 +15,16 @@ export const useFormValidation = (inputs: InputProps[]) => {
     }
     if (input.type === 'password') {
       const password = String(value)
-      const hasCorrectLength = password.length >= 8 && password.length <=16
+      const hasCorrectLength = password.length >= 8 && password.length <= 16
       const hasUppercaseLetter = /[A-Z]/.test(password)
       const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password)
       const hasNumber = /\d/.test(password)
-      return hasCorrectLength && hasUppercaseLetter && hasSpecialCharacter && hasNumber
+      return (
+        hasCorrectLength &&
+        hasUppercaseLetter &&
+        hasSpecialCharacter &&
+        hasNumber
+      )
     }
     return true
   })

@@ -1,0 +1,47 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`componentes visuais > mantem snapshots dos componentes e suas classes > button-alert-disabled 1`] = `
+<DocumentFragment>
+  <button
+    class="sc-gKscCa kDwMGP alert"
+    disabled=""
+  >
+    Excluir
+  </button>
+</DocumentFragment>
+`;
+
+exports[`componentes visuais > mantem snapshots dos componentes e suas classes > button-alert-disabled-styles 1`] = `
+{
+  "backgroundColor": "rgb(49, 54, 73)",
+  "color": "rgb(109, 120, 142)",
+  "cursor": "not-allowed",
+}
+`;
+
+exports[`componentes visuais > mantem snapshots dos componentes e suas classes > button-primary 1`] = `
+<DocumentFragment>
+  <button
+    class="sc-gKscCa gtJqEX primary"
+  >
+    Salvar
+  </button>
+</DocumentFragment>
+`;
+
+exports[`componentes visuais > mantem snapshots dos componentes e suas classes > button-primary-styles 1`] = `
+{
+  "backgroundColor": "rgb(12, 112, 242)",
+  "color": "rgb(255, 255, 255)",
+}
+`;
+
+exports[`componentes visuais > mantem snapshots dos componentes e suas classes > card-success 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-eCssys hGglgS success"
+  >
+    Conteudo do card
+  </div>
+</DocumentFragment>
+`;

@@ -19,15 +19,16 @@ export const usePost = <T, P>(endpoint: string, withAuth?: boolean) => {
     setError(null)
 
     try {
-      const headers = withAuth ? {
-        'Authorization': `Bearer ${Cookies.get('Authorization')}`,
-          'Content-Type': 'application/json',
-          ...config?.headers,
-      } : 
-      {
-        'Content-Type': 'application/json',
-          ...config?.headers,
-      }
+      const headers = withAuth
+        ? {
+            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            'Content-Type': 'application/json',
+            ...config?.headers,
+          }
+        : {
+            'Content-Type': 'application/json',
+            ...config?.headers,
+          }
       const response = await axioInstance({
         url: endpoint,
         method: 'POST',
@@ -60,7 +61,7 @@ export const useGet = <T>(endpoint: string, config?: AxiosRequestConfig) => {
         url: endpoint,
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${Cookies.get('Authorization')}`,
+          Authorization: `Bearer ${Cookies.get('Authorization')}`,
           ...config?.headers,
         },
         ...config,
@@ -96,7 +97,7 @@ export const usePut = <T>(endpoint: string) => {
         method: 'PUT',
         data: putData,
         headers: {
-          'Authorization': `Bearer ${Cookies.get('Authorization')}`,
+          Authorization: `Bearer ${Cookies.get('Authorization')}`,
           'Content-Type': 'application/json',
           ...config?.headers,
         },
@@ -126,14 +127,14 @@ export const useDelete = <T>(endpoint: string) => {
         url: endpoint,
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${Cookies.get('Authorization')}`,
+          Authorization: `Bearer ${Cookies.get('Authorization')}`,
           ...config?.headers,
         },
         ...config,
       })
       setData(response.data)
     } catch (e: any) {
-      throw e.response?.status 
+      throw e.response?.status
     } finally {
       setLoading(false)
     }

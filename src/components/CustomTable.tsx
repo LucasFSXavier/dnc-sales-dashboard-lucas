@@ -15,13 +15,13 @@ const TableWrapper = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    
+
     .ellipsis-sm {
-      width: ${pxToRem(300)}
+      width: ${pxToRem(300)};
     }
 
     .ellipsis-xs {
-      width: ${pxToRem(150)}
+      width: ${pxToRem(150)};
     }
 
     th,

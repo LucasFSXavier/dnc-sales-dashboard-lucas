@@ -1,5 +1,30 @@
 # React + TypeScript + Vite
 
+## Testes
+
+Execute os testes unitários:
+
+```bash
+npm test
+```
+
+Gere o coverage em `coverage/` nos formatos texto, HTML e LCOV:
+
+```bash
+npm run test:coverage
+```
+
+Execute os testes E2E:
+
+```bash
+npm run test:e2e
+npm run test:e2e:headed
+npm run test:e2e:debug
+npm run test:e2e:ui
+```
+
+Os últimos três comandos executam, respectivamente, com navegador visível, no modo de depuração e na interface interativa do Playwright.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
